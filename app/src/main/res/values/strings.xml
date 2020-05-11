@@ -2,4 +2,6 @@
     <string name="app_name">MyPoint-OfInterest</string>
     <string name="add_this_location">Add This Location</string>
     <string name="save_location">Save Location</string>
+    <string name="get_location">Get Location</string>
+    <string name="get_my_location">Get My Location</string>
 </resources>

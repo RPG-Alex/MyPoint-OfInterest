@@ -25,15 +25,3 @@ class MainActivity : AppCompatActivity() {
 
 
 
-/*
-
-val quizIntent: Intent = Intent(this,quizActivity::class.java).apply {
-            //put data in quizIntent
-            putExtra("EXTRA_FIRSTNAME",firstname)
-            putExtra("EXTRA_SURNAME",surname)
-            putExtra("EXTRA_AGE",age)
-        }
-        startActivityForResult(quizIntent, SCORE_REQUEST)
-
-
- */

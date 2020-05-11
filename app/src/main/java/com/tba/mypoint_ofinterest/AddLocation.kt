@@ -1,46 +1,29 @@
 package com.tba.mypoint_ofinterest
 
-import android.Manifest
+
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
+import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
 import android.view.View
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
 import kotlinx.android.synthetic.main.activity_add_location.*
-import kotlinx.android.synthetic.main.activity_location_info.*
-import kotlinx.android.synthetic.main.activity_main.*
+
 
 class AddLocation : AppCompatActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_location)
+    //variables needed for location grab
+    lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    lateinit var locationRequest: LocationRequest
+    lateinit var locationCallback: LocationCallback
+    var REQUEST_CODE = 1000
+    lateinit var userLocation: Location
 
-        lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-        lateinit var locationRequest: LocationRequest
-        lateinit var locationCallback: LocationCallback
-        var REQUEST_CODE = 1000
-
-        btn_accept.setOnClickListener{view->addInfo(view)}
-    }
-    fun addInfo(x:View?){
-        val infoIntent: Intent = Intent(this,LocationInfo::class.java)
-        startActivity(infoIntent)
-    }
-}
-
-
-/*
-
-class MainActivity : AppCompatActivity() {
-
-
+    //Deal with permissions
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -48,69 +31,99 @@ class MainActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
-            REQUEST_CODE->{
-                if (grantResults.size > 0)
-                {
+            REQUEST_CODE -> {
+                if (grantResults.size > 0) {
                     if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                        Toast.makeText(this,"Permission Granted",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show()
                     else
-                        Toast.makeText(this,"Permission Denied",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show()
                 }
             }
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_add_location)
 
         //Check for permission!
 
-        if(ActivityCompat.shouldShowRequestPermissionRationale(this,android.Manifest.permission.ACCESS_FINE_LOCATION))
-            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),REQUEST_CODE)
+        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        )
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                REQUEST_CODE
+            )
         else {
             buildLocationRequest()
             buildLocationCallback()
 
             //Create fused provider client
-            fusedLocationProviderClinet = LocationServices.getFusedLocationProviderClient(this)
+            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
-            //set event
-            btn_start_update.setOnClickListener(View.OnClickListener {
-                if (ActivityCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED )
-                {
-                    ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),REQUEST_CODE)
+            //get location
+
+            //start getting location
+            btnGetLocation.setOnClickListener(View.OnClickListener {
+                if (ActivityCompat.checkSelfPermission(
+                        this,
+                        android.Manifest.permission.ACCESS_FINE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                        REQUEST_CODE
+                    )
                     return@OnClickListener
                 }
-                fusedLocationProviderClinet.requestLocationUpdates(locationRequest,locationCallback,
-                    Looper.myLooper())
-
-                //change the state of the buttons
-                btn_start_update.isEnabled =   !btn_start_update.isEnabled
-                btn_stop_update.isEnabled = !btn_stop_update.isEnabled
+                fusedLocationProviderClient.requestLocationUpdates(
+                    locationRequest, locationCallback,
+                    Looper.myLooper()
+                )
+                //make the button invisible after clicked
+                btnGetLocation.visibility = View.INVISIBLE
             })
 
-            btn_stop_update.setOnClickListener(View.OnClickListener {
-                if (ActivityCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED )
-                {
-                    ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),REQUEST_CODE)
-                    return@OnClickListener
+
+        }
+        //Listen for clicking add location then turn off GPS and proceed to next view
+        btn_accept.setOnClickListener {
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                    REQUEST_CODE
+                )
+
+            }
+            fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+            locationCallback = object : LocationCallback() {
+                override fun onLocationResult(p0: LocationResult?) {
+                    userLocation = p0!!.locations.get(p0!!.locations.size - 1) //get last location
                 }
-                fusedLocationProviderClinet.removeLocationUpdates(locationCallback)
-
-                //change the state of the buttons
-                btn_start_update.isEnabled =   !btn_start_update.isEnabled
-                btn_stop_update.isEnabled = !btn_stop_update.isEnabled
-            })
+            }
+            var long = userLocation.longitude
+            var lat = userLocation.latitude
+            addInfo(long,lat)
         }
     }
 
     private fun buildLocationCallback() {
-        locationCallback = object :LocationCallback(){
+        locationCallback = object : LocationCallback() {
             override fun onLocationResult(p0: LocationResult?) {
-                var location = p0!!.locations.get(p0!!.locations.size-1) //get last location
-                txt_location.text = location.latitude.toString()+"/"+location.longitude.toString()
+                var location = p0!!.locations.get(p0!!.locations.size - 1) //get last location
+                userLocation = location
+                txtLocation.text =
+                    location.latitude.toString() + "/" + location.longitude.toString() + "and accuracy" + location.accuracy.toString()
             }
         }
     }
@@ -122,6 +135,26 @@ class MainActivity : AppCompatActivity() {
         locationRequest.fastestInterval = 3000
         locationRequest.smallestDisplacement = 10f
     }
+
+    //This gives intent and takes the GPS data to the next view to be combined with user input
+    fun addInfo(long:Double,lat:Double) {
+
+        val infoIntent: Intent = Intent(this, LocationInfo::class.java).apply {
+            putExtra("LAT_DATA", lat)
+            putExtra("LONG_DATA",long)
+        }
+
+        startActivity(infoIntent)
+    }
+
+
+    //Stop getting location data if back button is pressed
+    override fun onSupportNavigateUp(): Boolean {
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+        return super.onSupportNavigateUp()
+    }
+
+
 }
 
- */
+
