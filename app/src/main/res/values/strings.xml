@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MyPoint-OfInterest</string>
+    <string name="add_this_location">Add This Location</string>
+    <string name="save_location">Save Location</string>
+</resources>
