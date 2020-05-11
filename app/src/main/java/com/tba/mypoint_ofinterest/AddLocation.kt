@@ -113,6 +113,7 @@ class AddLocation : AppCompatActivity() {
             }
             var long = userLocation.longitude
             var lat = userLocation.latitude
+
             addInfo(long,lat)
         }
     }
@@ -143,8 +144,9 @@ class AddLocation : AppCompatActivity() {
             putExtra("LAT_DATA", lat)
             putExtra("LONG_DATA",long)
         }
+            startActivity(infoIntent)
 
-        startActivity(infoIntent)
+
     }
 
 
