@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        /* This is the code for listing the xml files
         val sharedPrefsDir = File(applicationInfo.dataDir, "shared_prefs")
         if(sharedPrefsDir.exists() && sharedPrefsDir.isDirectory()){
             val list = sharedPrefsDir.list();
@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
                 //txtTest.text = txtTest.text.toString()+it.toString()
             }
         }
-
+        */
         //Pressing GPS icon will go to adding a new location
         fabAddLocation.setOnClickListener { view -> addLocation(view) }
         }
@@ -37,5 +37,17 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+/* Modify This so that you can chop off the .xml for the files
+//To get the selected item
 
+String item = (String) sp.getSelectedItem();
+    //remove .xml from the file name
+    String preffile = item.substring(0, item.length()-4);
 
+    SharedPreferences sp2 = getSharedPreferences(preffile, MODE_PRIVATE);
+    Map<String, ?> map = sp2.getAll();
+
+    for (Entry<String, ?> entry : map.entrySet()){
+        System.out.println("key is "+ entry.getKey() + " and value is " + entry.getValue());
+    }
+ */
