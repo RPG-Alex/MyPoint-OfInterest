@@ -68,7 +68,7 @@ class AddLocation : AppCompatActivity() {
             //get location
 
             //start getting location
-            btnGetLocation.setOnClickListener(View.OnClickListener {
+            //btnGetLocation.setOnClickListener(View.OnClickListener {
                 if (ActivityCompat.checkSelfPermission(
                         this,
                         android.Manifest.permission.ACCESS_FINE_LOCATION
@@ -79,7 +79,7 @@ class AddLocation : AppCompatActivity() {
                         arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
                         REQUEST_CODE
                     )
-                    return@OnClickListener
+                    //return@OnClickListener
                 }
                 fusedLocationProviderClient.requestLocationUpdates(
                     locationRequest, locationCallback,
@@ -87,34 +87,42 @@ class AddLocation : AppCompatActivity() {
                 )
                 //make the button invisible after clicked
                 btnGetLocation.visibility = View.INVISIBLE
-            })
+           // })
 
 
         }
         //Listen for clicking add location then turn off GPS and proceed to next view
         btn_accept.setOnClickListener {
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    android.Manifest.permission.ACCESS_FINE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                    REQUEST_CODE
-                )
+            if (this::userLocation.isInitialized){
+                if (ActivityCompat.checkSelfPermission(
+                        this,
+                        android.Manifest.permission.ACCESS_FINE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                        REQUEST_CODE
+                    )
 
-            }
-            fusedLocationProviderClient.removeLocationUpdates(locationCallback)
-            locationCallback = object : LocationCallback() {
-                override fun onLocationResult(p0: LocationResult?) {
-                    userLocation = p0!!.locations.get(p0!!.locations.size - 1) //get last location
                 }
-            }
-            var long = userLocation.longitude
-            var lat = userLocation.latitude
+                fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+                locationCallback = object : LocationCallback() {
+                    override fun onLocationResult(p0: LocationResult?) {
+                        userLocation =
+                            p0!!.locations.get(p0!!.locations.size - 1) //get last location
+                    }
+                }
+                var long = userLocation.longitude
+                var lat = userLocation.latitude
 
-            addInfo(long,lat)
+                addInfo(long, lat)
+
+            } else {
+
+                Toast.makeText(this,"Unable to Ad Location, Please Make sure you have clicked to add your current location",Toast.LENGTH_LONG).show()
+            }
+
         }
     }
 
@@ -154,6 +162,11 @@ class AddLocation : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         fusedLocationProviderClient.removeLocationUpdates(locationCallback)
         return super.onSupportNavigateUp()
+    }
+
+    override fun onBackPressed() {
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+        super.onBackPressed()
     }
 
 

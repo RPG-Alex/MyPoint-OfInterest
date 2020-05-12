@@ -4,4 +4,8 @@
     <string name="save_location">Save Location</string>
     <string name="get_location">Get Location</string>
     <string name="get_my_location">Get My Location</string>
+    <string name="your_current_longitude_and_latitude">Your Current Longitude and Latitude</string>
+    <string name="give_this_location_a_name">Give this location a name!</string>
+    <string name="give_a_short_description_about_this_location">Give a short description about this location!</string>
+    <string name="location_to_load_here">Location To Load Here</string>
 </resources>
