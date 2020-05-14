@@ -26,7 +26,7 @@ class EditLocation : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_location_info)
-
+/*
         //pass the file name for editing
         file = intent.getStringExtra("FILE_DATA")
 
@@ -64,7 +64,7 @@ class EditLocation : AppCompatActivity() {
             }
 
         }
-
+*/
     }
 
     //These functions all set the intent to main activity, regardless of method user uses
