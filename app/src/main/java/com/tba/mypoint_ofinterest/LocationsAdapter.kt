@@ -3,6 +3,7 @@ package com.tba.mypoint_ofinterest
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,17 +12,14 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.saved_location_layout.view.*
+
 class LocationsAdapter(private val locationList:List<LocationItem>):RecyclerView.Adapter<LocationsAdapter.LocationViewHolder>() {
 
     companion object {
         private lateinit var context: Context
+
         fun setContext(con:Context){
             context=con
-        }
-
-        fun EditALocation(context: Context) {
-            val intent = Intent(context, EditLocation::class.java)
-            context.startActivity(intent)
         }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationViewHolder {
@@ -35,6 +33,24 @@ class LocationsAdapter(private val locationList:List<LocationItem>):RecyclerView
 
     override fun onBindViewHolder(holder: LocationViewHolder, position: Int) {
 
+
+
+            fun EditALocation(context: Context) {
+                val intent = Intent(context, EditLocation::class.java).apply {
+                    putExtra("TITLE_DATA",holder.textView1.text.toString())
+                }
+                context.startActivity(intent)
+            }
+            fun showOnMap(View: Context){
+                val location: String = holder.textView3.text.toString()
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("google.navigation:q=$location")
+                )
+                context.startActivity(intent)
+
+            }
+
         val currentItem = locationList[position]
 
 
@@ -45,6 +61,9 @@ class LocationsAdapter(private val locationList:List<LocationItem>):RecyclerView
         holder.textView3.text = currentItem.text3
         holder.editButton.setOnClickListener {
            EditALocation(context)
+        }
+        holder.imageButton.setOnClickListener {
+            showOnMap(context)
         }
 
 

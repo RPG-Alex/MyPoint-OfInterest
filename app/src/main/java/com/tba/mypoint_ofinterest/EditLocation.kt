@@ -25,10 +25,10 @@ class EditLocation : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_location_info)
-/*
+        setContentView(R.layout.activity_edit_location)
+
         //pass the file name for editing
-        file = intent.getStringExtra("FILE_DATA")
+        file = intent.getStringExtra("TITLE_DATA")
 
         //get file content
         preferences = getSharedPreferences(file,Context.MODE_PRIVATE)
@@ -36,6 +36,8 @@ class EditLocation : AppCompatActivity() {
         txtTitle.setText(preferences.getString("Title",""))
         txtShortDescription.setText(preferences.getString("Description",""))
         txtLocation.text = preferences.getString("Longitude","") + ", "+ preferences.getString("Latitude","")
+
+
         //This is used for saving the data
         btnUpdateLocation.setOnClickListener {
             if (txtTitle.text.isEmpty() || txtShortDescription.text.isEmpty() || txtShortDescription.text.toString().length > 50 || txtTitle.text.toString().length > 20) {
@@ -64,7 +66,7 @@ class EditLocation : AppCompatActivity() {
             }
 
         }
-*/
+
     }
 
     //These functions all set the intent to main activity, regardless of method user uses

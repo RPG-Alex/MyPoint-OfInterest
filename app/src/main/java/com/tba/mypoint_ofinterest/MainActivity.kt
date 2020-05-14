@@ -46,7 +46,7 @@ open class MainActivity : AppCompatActivity() {
 
             val getTitle = prefs.getString("Title", "")
             val getDescription = prefs.getString("Description", "")
-            val getGps = prefs.getString("Longitude", "") + "," + prefs.getString("Latitude", "")
+            val getGps = prefs.getString("Latitude", "") + ", " + prefs.getString("Longitude", "")
             val listItem = LocationItem(
                 R.drawable.ic_location_icon,
                 getTitle.toString(),
@@ -60,6 +60,7 @@ open class MainActivity : AppCompatActivity() {
         return itemList
 
     }
+
 
     fun populateRecycler() {
         val sharedPrefsDir = File(applicationInfo.dataDir, "shared_prefs")
@@ -80,46 +81,3 @@ open class MainActivity : AppCompatActivity() {
 
     }
 }
-
-    //a function to open the an activity to edit this location. Need to figure this shit out
-
-
-/*
-        val exampleList = generateDummyList(100)
-
-        recycler_view.adapter=ExampleAdapter(exampleList)
-        recycler_view.layoutManager=LinearLayoutManager(this)
-        recycler_view.setHasFixedSize(true)
-    }
-
-    private fun generateDummyList(size:Int):List<ExampleItem>{
-        val list = ArrayList<ExampleItem>()
-        for (i in 0 until size){
-            val drawable = when (i % 3){
-                0 -> R.drawable.android_guy
-                1 -> R.drawable.talkie
-                else -> R.drawable.bizniz
-            }
-            val item = ExampleItem(drawable,"Item $i","Line 2")
-            list += item
-        }
-        return list
-    }
-}
-
-
-
-Modify This so that you can chop off the .xml for the files
-//To get the selected item
-
-String item = (String) sp.getSelectedItem();
-    //remove .xml from the file name
-    String preffile = item.substring(0, item.length()-4);
-
-    SharedPreferences sp2 = getSharedPreferences(preffile, MODE_PRIVATE);
-    Map<String, ?> map = sp2.getAll();
-
-    for (Entry<String, ?> entry : map.entrySet()){
-        System.out.println("key is "+ entry.getKey() + " and value is " + entry.getValue());
-    }
- */
