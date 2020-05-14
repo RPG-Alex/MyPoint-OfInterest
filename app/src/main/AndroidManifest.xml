@@ -13,14 +13,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".LocationInfo"
-            android:label="info"
+            android:name=".EditLocation"
+            android:label="Update"
             android:parentActivityName=".MainActivity"
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"
-                />
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".LocationInfo"
+            android:label="info"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".AddLocation"

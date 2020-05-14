@@ -153,7 +153,7 @@ class AddLocation : AppCompatActivity() {
             putExtra("LONG_DATA",long)
         }
             startActivity(infoIntent)
-
+        overridePendingTransition(R.anim.fade_in, R.anim.slide_out)
 
     }
 
