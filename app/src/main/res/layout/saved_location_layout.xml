@@ -33,13 +33,12 @@
 
         <TextView
             android:id="@+id/text_view_2"
-            android:layout_width="wrap_content"
+            android:layout_width="225dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_view_1"
             android:layout_toEndOf="@+id/btn_location"
-            android:text="Line 2"
 
-            />
+            android:text="Line 2" />
         <TextView
             android:id="@+id/text_view_3"
             android:layout_width="wrap_content"

@@ -1,6 +1,7 @@
 package com.tba.mypoint_ofinterest
 
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
@@ -42,6 +43,7 @@ class AddLocation : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_location)
@@ -91,6 +93,12 @@ class AddLocation : AppCompatActivity() {
 
 
         }
+        txtLocation.text == "Getting Location Data Now, Please wait"
+        if (txtLocation.text == "Getting Location Data Now, Please wait"){
+            btn_accept.isEnabled= false
+        } else {
+            btn_accept.isEnabled= true
+        }
         //Listen for clicking add location then turn off GPS and proceed to next view
         btn_accept.setOnClickListener {
             if (this::userLocation.isInitialized){
@@ -113,6 +121,7 @@ class AddLocation : AppCompatActivity() {
                             p0!!.locations.get(p0!!.locations.size - 1) //get last location
                     }
                 }
+
                 var long = userLocation.longitude
                 var lat = userLocation.latitude
 
@@ -131,8 +140,10 @@ class AddLocation : AppCompatActivity() {
             override fun onLocationResult(p0: LocationResult?) {
                 var location = p0!!.locations.get(p0!!.locations.size - 1) //get last location
                 userLocation = location
+
+
                 txtLocation.text =
-                    location.latitude.toString() + "/" + location.longitude.toString() + "and accuracy" + location.accuracy.toString()
+                    location.latitude.toString() + "/" + location.longitude.toString()
             }
         }
     }

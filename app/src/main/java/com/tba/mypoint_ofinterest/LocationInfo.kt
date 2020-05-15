@@ -39,7 +39,7 @@ class LocationInfo : AppCompatActivity() {
 
 
 
-
+        btnDelete.setOnClickListener { cancel() }
         btnSaveLocation.setOnClickListener {
             if (txtTitle.text.isEmpty() || txtShortDescription.text.isEmpty() || txtShortDescription.text.toString().length > 50 || txtTitle.text.toString().length > 20) {
                 Toast.makeText(
@@ -57,7 +57,7 @@ class LocationInfo : AppCompatActivity() {
                 //Based on example given in week 11. This will make a file that is called title.txt. Then fill it with the relevant data
                 preferences = getSharedPreferences("$title", Context.MODE_PRIVATE)
                 editor = preferences.edit()
-                editor.putString("Title", title.toLowerCase())
+                editor.putString("Title", title)
                 editor.putString("Description", description)
                 editor.putString("Longitude", longitude.toString())
                 editor.putString("Latitude", latitude.toString())
@@ -78,16 +78,26 @@ class LocationInfo : AppCompatActivity() {
         //This sets the intent we want (go back to home screen)
         val saveIntent: Intent = Intent(this, MainActivity::class.java)
         startActivity(saveIntent)
+        overridePendingTransition(R.anim.fade_in, R.anim.slide_out)
+    }
+    fun cancel(){
+        val cancelIntent:Intent = Intent(this,MainActivity::class.java)
+
+        Toast.makeText(this,"Location Add Was Cancelled",Toast.LENGTH_SHORT).show()
+        startActivity(cancelIntent)
+        overridePendingTransition(R.anim.fade_in, R.anim.slide_out)
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return super.onSupportNavigateUp()
         startActivity(Intent(this, MainActivity::class.java))
+        overridePendingTransition(R.anim.fade_in, R.anim.slide_out)
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
         startActivity(Intent(this, MainActivity::class.java))
+        overridePendingTransition(R.anim.fade_in, R.anim.slide_out)
     }
 }
 

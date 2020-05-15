@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">MyPoint-OfInterest</string>
     <string name="add_this_location">Add This Location</string>
+    <string name="update_location">Update Location</string>
     <string name="save_location">Save Location</string>
     <string name="get_location">Get Location</string>
     <string name="get_my_location">Get My Location</string>
@@ -8,4 +9,9 @@
     <string name="give_this_location_a_name">Give this location a name!</string>
     <string name="give_a_short_description_about_this_location">Give a short description about this location!</string>
     <string name="location_to_load_here">Location To Load Here</string>
+    <string name="delete">Delete</string>
+    <string name="rename_this_location">Rename This Location</string>
+    <string name="update_the_description">Update the description</string>
+    <string name="this_locations_current_coordinates">This locations current Coordinates</string>
+    <string name="cancel">Cancel</string>
 </resources>

@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_edit_location.*
+import java.io.File
 import kotlin.properties.Delegates
 
 class EditLocation : AppCompatActivity() {
@@ -56,7 +57,7 @@ class EditLocation : AppCompatActivity() {
                 //Based on example given in week 11. This will make a file that is called title.txt. Then fill it with the relevant data
                 preferences = getSharedPreferences("$title", Context.MODE_PRIVATE)
                 editor = preferences.edit()
-                editor.putString("Title", title.toLowerCase())
+                editor.putString("Title", title)
                 editor.putString("Description", description)
                 editor.apply()
 
@@ -66,6 +67,7 @@ class EditLocation : AppCompatActivity() {
             }
 
         }
+        btnDelete.setOnClickListener { deleteInfo(txtTitle.text.toString()) }
 
     }
 
@@ -75,6 +77,23 @@ class EditLocation : AppCompatActivity() {
         val saveIntent: Intent = Intent(this, MainActivity::class.java)
         startActivity(saveIntent)
         overridePendingTransition(R.anim.fade_in, R.anim.slide_out)
+    }
+    fun deleteInfo(title:String){
+        val sharedPrefsDir = File(applicationInfo.dataDir, "shared_prefs")
+        val file = File("${sharedPrefsDir.toString()}/${title.toString()}.xml")
+        if (file.isFile){
+            file.delete()
+            val deleteIntent:Intent = Intent(this,MainActivity::class.java)
+            overridePendingTransition(R.anim.fade_in, R.anim.slide_out)
+            Toast.makeText(this,"Post Successfully Deteted",Toast.LENGTH_SHORT).show()
+            startActivity(deleteIntent)
+
+        }else {
+            Toast.makeText(this,"There was an issue deleting this file",Toast.LENGTH_SHORT).show()
+        }
+
+
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
